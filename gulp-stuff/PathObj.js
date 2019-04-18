@@ -1,10 +1,17 @@
+/**
+ * makes working with paths easier, paths are assumed to be relative
+ */
 class Path {
   constructor(pathStr) {
     this.parts = pathStr.split('/')
   }
 
   setRoot(root) {
-    this.parts[0] = root
+    let parts = root.split('/')
+    for(let i = 0; i < parts.length; i++) {
+      this.parts[i] = parts[i]
+    }
+
     return this
   }
 
