@@ -16,7 +16,7 @@ class Path {
   }
 
   getPath() {
-    let res = './'
+    let res = ''
     let part
     for(let i = 0; i < this.parts.length; i++) {
       part = this.parts[i]

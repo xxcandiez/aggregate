@@ -58,7 +58,8 @@ async function getTransformedFiles(pathList) {
 
   for(let i = 0; i < pathList.length; i++) {
     path = pathList[i]
-    contents = await transformFilep(path).then(res => res.code)
+    contents = await transformFilep(path)
+    contents = contents.code
 
     res.push({
       path: path,
@@ -74,13 +75,15 @@ async function getTransformedFiles(pathList) {
  * @param fileContentsList a list of obj that contains the 'path' and 'contents'
  *   to write
  */
-async function writeTransformedFiles(fileContentsList) {
+async function writeTransformedFiles(fileContentsList, dest) {
   let obj
 
   for(let i = 0; i < fileContentsList.length; i++) {
     obj = fileContentsList[i]
-    console.log(obj.path, obj.contents)
-    await fs.writeFile(obj.path, obj.contents)
+
+    // this line is important
+    newPath = new Path(obj.path).setRoot(dest).getPath()
+    await fs.writeFile(newPath, obj.contents)
   }
 }
 
@@ -92,9 +95,7 @@ async function transpileSource(src, dest) {
   await setupFolderStructure(filesAndDirList.dirs, dest)
 
   transformedFiles = await getTransformedFiles(filesAndDirList.files)
-  await writeTransformedFiles(transformedFiles)
+  await writeTransformedFiles(transformedFiles, dest)
 }
-
-transpileSource('./src', './dest')
 
 module.exports = transpileSource

@@ -1,1 +1,3 @@
-[object Object]
+let a = () => {
+  return 'hello';
+}
