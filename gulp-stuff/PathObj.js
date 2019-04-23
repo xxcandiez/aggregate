@@ -6,6 +6,10 @@ class Path {
     this.parts = pathStr.split('/')
   }
 
+  getDepth() {
+    return this.parts.length
+  }
+
   setRoot(root) {
     let parts = root.split('/')
     for(let i = 0; i < parts.length; i++) {

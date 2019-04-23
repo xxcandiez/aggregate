@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import reactDOM from 'react-dom'
+import ReactDOM from 'react-dom'
 
 class App extends Component {
   constructor(props) {
@@ -7,9 +7,10 @@ class App extends Component {
   }
 
   render() {
+    console.log('render')
     return (
       <div>
-        hello
+        my name is bob!!
       </div>
     )
   }
