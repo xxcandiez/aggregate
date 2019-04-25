@@ -10,13 +10,16 @@ class Path {
     return this.parts.length
   }
 
-  setRoot(root) {
-    let parts = root.split('/')
-    for(let i = 0; i < parts.length; i++) {
-      this.parts[i] = parts[i]
+  getParent() {
+    let res = ''
+    let part
+
+    for(let i = 0; i < this.parts.length - 1; i++) {
+      part = this.parts[i]
+      res += part
     }
 
-    return this
+    return res
   }
 
   getPath() {
@@ -30,6 +33,15 @@ class Path {
       }
     }
     return res
+  }
+
+  setRoot(root) {
+    let parts = root.split('/')
+    for(let i = 0; i < parts.length; i++) {
+      this.parts[i] = parts[i]
+    }
+
+    return this
   }
 }
 
