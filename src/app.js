@@ -10,7 +10,7 @@ class App extends Component {
     console.log('render')
     return (
       <div>
-        my name is bob!!
+        my name is bob!! hi mom
       </div>
     )
   }

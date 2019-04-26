@@ -1,3 +1,4 @@
+const bundleFiles = require('./bundleFiles.js')
 const fs = require('fs').promises
 const transformFile = require('./transformFilePromise.js')
 
@@ -14,29 +15,22 @@ class DevBuild {
   }
 
   /**
-   * gets files, dirs
-   * @return {Promise} [description]
+   * please load beofre using other function
+   * @return {Promise}
    */
-  async update() {
+  async load() {
+    let data = await DevBuild.getFilesDirsRecur(this.src)
+    this.files = data.files
+    this.dirs = data.dirs
 
-  }
-
-  /**
-   * gets a list of files in source directory
-   * @return {Promise<Array>} array of names files contained in 'this.src'
-   */
-  async getFiles() {
-    let files = (await DevBuild.getFilesDirsRecur(this.src)).files
-    return await files
-  }
-
-  /**
-   * gets a list of directories
-   * @return {Promise<Array>} array of names of directories in 'this.src'
-   */
-  async getDirs() {
-    let dirs = (await DevBuild.getFilesDirsRecur(this.src)).dirs
-    return await dirs
+    let newFile
+    let content
+    this.transpileMap = []
+    for(let i = 0; i < this.files.length; i++) {
+      newFile = new Path(this.files[i]).setRoot(this.dest).getPath()
+      content = await transformFile(this.files[i]).code
+      this.transpileMap.push({path: newFile, content: content})
+    }
   }
 
   /**
@@ -77,11 +71,11 @@ class DevBuild {
    * @return {Promise} that directory structure is copied
    */
   async buildDirStructure() {
-    let dirs = await this.getDirs()
+    let dirs
     let dir
 
     // change dirs to path objects
-    dirs = dirs.map((dir) => {
+    dirs = this.dirs.map((dir) => {
       return new Path(dir)
     })
 
@@ -106,41 +100,16 @@ class DevBuild {
     }
   }
 
-  async transpileAndWriteFiles() {
-    let res = await this.transpileFiles()
-    this.writeTranspiledFiles(res)
-  }
-
-  /**
-   * transpiles and stores files in 'this.src'
-   * @return {Promise<Array>} Promise of Array of obj with attributes path, and
-   *   content
-   */
-  async transpileFiles() {
-    let files = await this.getFiles()
-    let res = []
-    let file
-    let content
-
-    for(let i = 0; i < files.length; i++) {
-      file = files[i]
-      content = (await transformFile(file)).code
-      file = new Path(file).setRoot(this.dest).getPath()
-      res.push({
-        path: file,
-        content: content
-      })
-    }
-
-    return res
-  }
-
-  async writeTranspiledFiles(transpileFilesRes) {
+  async writeTranspiledFiles() {
     let curr
-    for(let i = 0; i < transpileFilesRes.length; i++) {
-      curr = transpileFilesRes[i]
+    for(let i = 0; i < this.transpileMap.length; i++) {
+      curr = this.transpileMap[i]
       await fs.writeFile(curr.path, curr.content)
     }
+  }
+
+  async bundleFiles() {
+    await await bundleFiles()
   }
 }
 
