@@ -1,11 +1,24 @@
 const bundleFiles = require('./gulp-stuff/bundleFiles.js')
-const bs = require('browser-sync').create()
-const shoveHtml = require('./gulp-stuff/shoveHtml.js')
 const gulp = require('gulp')
+const puppeteer = require('puppeteer')
+const shoveHtml = require('./gulp-stuff/shoveHtml.js')
+
 const DevBuild = require('./gulp-stuff/DevBuild.js')
 
-function stuff(cb) {
-  bs.init({}, cb)
+// don't touch please .-.
+var browser
+var page
+(async() => {
+  browser = await puppeteer.launch({
+    headless: false
+  })
+
+  page = (await browser.pages())[0]
+  await page.goto('localhost:3000')
+})()
+
+async function reload() {
+  await page.reload()
 }
 
 async function devBuild() {
@@ -15,6 +28,7 @@ async function devBuild() {
   await devBuild.writeTranspiledFiles()
   await devBuild.bundleFiles()
   await shoveHtml('./dest')
+  await reload()
 }
 
 async function watcher() {
@@ -23,4 +37,3 @@ async function watcher() {
 
 exports.watcher = watcher
 exports.devBuild = devBuild
-exports.stuff = stuff

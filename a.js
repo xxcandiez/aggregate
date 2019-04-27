@@ -1,6 +1,10 @@
-let exec = require('child_process').exec
-try {
-  exec('./web_server.js')
-} catch(err) {
-  console.log(err)
-}
+const puppeteer = require('puppeteer');
+
+(async () => {
+  const browser = await puppeteer.launch({headless: false});
+  const page = await browser.newPage();
+  await page.goto('https://example.com');
+  await page.screenshot({path: 'example.png'});
+
+  // await browser.close();
+})();

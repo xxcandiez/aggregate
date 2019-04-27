@@ -6,9 +6,9 @@
   "devDependencies": {
     "@babel/core": "7.4.3",
     "@babel/preset-react": "7.0.0",
-    "browser-sync": "^2.26.5",
     "express": "4.16.4",
     "gulp": "4.0.0",
+    "puppeteer": "^1.15.0",
     "rimraf": "2.6.3",
     "webpack": "^4.30.0"
   }
