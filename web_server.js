@@ -22,7 +22,7 @@ app.get('/reset.css', (req, res) => {
   let options = {
     root: `${__dirname}/dest`
   }
-  res.sendFiles('reset.css', options)
+  res.sendFile('reset.css', options)
 })
 
 
