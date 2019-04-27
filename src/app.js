@@ -1,5 +1,8 @@
+
+import CenterContents from './CenterContents.js'
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
+import style from './style'
 
 class App extends Component {
   constructor(props) {
@@ -9,8 +12,8 @@ class App extends Component {
   render() {
     console.log('render')
     return (
-      <div>
-        my name is bobby lee
+      <div style={style.app}>
+        <CenterContents/>
       </div>
     )
   }

@@ -14,6 +14,7 @@ var page
   })
 
   page = (await browser.pages())[0]
+  page.setViewport({width: 1920, height: 1080})
   await page.goto('localhost:3000')
 })()
 
