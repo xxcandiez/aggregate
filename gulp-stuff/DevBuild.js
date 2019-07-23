@@ -29,6 +29,8 @@ class DevBuild {
     for(let i = 0; i < this.files.length; i++) {
       newFile = new Path(this.files[i]).setRoot(this.dest).getPath()
       content = (await transformFile(this.files[i])).code
+      // console.log(content)
+      // console.log(newFile)
       this.transpileMap.push({path: newFile, content: content})
     }
   }

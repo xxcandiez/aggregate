@@ -8,7 +8,7 @@ const babel = require('@babel/core')
 function transformFilePromise(file) {
   return new Promise((resolve, reject) => {
     babel.transformFile(file, (err, res) => {
-      // console.log(err)
+      err && console.log(err)
       // console.log(res)
       resolve(res)
     })
